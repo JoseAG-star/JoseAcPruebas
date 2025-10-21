@@ -1,3 +1,9 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    
+    // Configuración añadida para forzar el agente Java de Mockito
+    "java.test.vmArgs": [
+        "-Xshare:off",
+        "-javaagent:C:/Users/ID138/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.5/byte-buddy-agent-1.17.5.jar"
+    ]
 }
