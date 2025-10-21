@@ -25,15 +25,15 @@ public class CalculadoraTest {
         System.out.println("Prueba Finalizada");
     }
     @Test
-//void testSumaNumerosPositivos(){
+void testSumaNumerosPositivos(){
  
-   // double resultadoEsperado = 15;
+   double resultadoEsperado = 15;
    
 
-    //double resultado = calc.suma(operador1, operador2);
+    double resultado = calc.suma(operador1, operador2);
 
-    //assertThat(resultadoEsperado, is(resultado));
-//}
+    assertThat(resultadoEsperado, is(resultado));
+}
 void testRestaNumerosPositivos(){
 
     double resultadoEsperado = 5;
@@ -44,4 +44,6 @@ void testRestaNumerosPositivos(){
 
     assertThat(resultadoEsperado, is(resultado));
 }
+
 }
+
