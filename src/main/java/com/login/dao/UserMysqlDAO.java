@@ -12,16 +12,16 @@ import com.login.modelo.Usuario;
 
 public class UserMysqlDAO implements IDAOLogin {
 
-	public Connection getConnectionMySQL() {
+public Connection getConnectionMySQL() {
 
 		Connection con = null;
 		try {
 			// Establish the driver connector
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			// Set the URI for connecting the MySql database
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mi_base", "root", "123456");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3307/calidad", "root", "123456");
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Error al obtener conexión: " + e);
 		}
 		return con;
 	}
@@ -50,7 +50,7 @@ public class UserMysqlDAO implements IDAOLogin {
 			String password = rs.getString(4);
 			boolean isLogged = rs.getBoolean(5);
 
-			result = new Usuario(id, username, password, email, isLogged);
+			result = new Usuario(username, isLogged, password, email);
 			result.setId(id);
 			result.setIsLogged(isLogged);
 
@@ -81,9 +81,7 @@ public class UserMysqlDAO implements IDAOLogin {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection
-					.prepareStatement("insert INTO usuarios(name,email,password,isLogged) values(?,?,?,?)",
-							Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement("insert INTO Usuario(name,email,password,isLogged) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, user.getName());
 			preparedStatement.setString(2, user.getEmail());
@@ -112,8 +110,8 @@ public class UserMysqlDAO implements IDAOLogin {
 		return result;
 	}
 
-	@Override
-	public Usuario findUserByEmail(String email) {
+	
+	public Usuario findUsuarioByEmail(String email) {
 		Connection connection = getConnectionMySQL();
 		PreparedStatement preparedStatement;
 		ResultSet rs;
@@ -122,7 +120,7 @@ public class UserMysqlDAO implements IDAOLogin {
 
 		try {
 			// Declare statement query to run
-			preparedStatement = connection.prepareStatement("SELECT * from usuarios WHERE email = ?");
+			preparedStatement = connection.prepareStatement("SELECT * from Usuario WHERE email = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, email);
 			rs = preparedStatement.executeQuery();
@@ -137,7 +135,7 @@ public class UserMysqlDAO implements IDAOLogin {
 				String password = rs.getString(4);
 				boolean isLogged = rs.getBoolean(5);
 	
-				result = new Usuario(id, username, emailUser, password, isLogged);
+				result = new Usuario(username, isLogged, emailUser, password);
 				result.setId(id);
 				result.setIsLogged(isLogged);
 	
@@ -179,7 +177,7 @@ public class UserMysqlDAO implements IDAOLogin {
 		  
 		  try {
 		   // Declare statement query to run
-		   preparedStatement = connection.prepareStatement("SELECT * from usuarios");
+		   preparedStatement = connection.prepareStatement("SELECT * from Usuario");
 		   // Set the values to match in the ? on query
 		   rs = preparedStatement.executeQuery();
 
@@ -191,7 +189,7 @@ public class UserMysqlDAO implements IDAOLogin {
 			   String email = rs.getString(3);
 			   String password = rs.getString(4);
 			   boolean log = rs.getBoolean(5);		 
-			   retrieved = new Usuario(id, name, email,password, log);
+			   retrieved = new Usuario(name, log, email,password);
 			   retrieved.setId(id);
 			   retrieved.setIsLogged(log);
 			   listaAlumnos.add(retrieved);
@@ -220,7 +218,7 @@ public class UserMysqlDAO implements IDAOLogin {
 
 		try {
 			// Declare statement query to run
-			preparedStatement = connection.prepareStatement("SELECT * from usuarios WHERE id = ?");
+			preparedStatement = connection.prepareStatement("SELECT * from Usuario WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setInt(1, id);
 			rs = preparedStatement.executeQuery();
@@ -234,7 +232,7 @@ public class UserMysqlDAO implements IDAOLogin {
 			String password = rs.getString(4);
 			boolean isLogged = rs.getBoolean(5);
 
-			result = new Usuario(idUser, username, email, password, isLogged);
+			result = new Usuario(username, isLogged, email, password);
 			result.setId(id);
 			result.setIsLogged(isLogged);
 
@@ -266,7 +264,7 @@ public class UserMysqlDAO implements IDAOLogin {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection.prepareStatement("Delete from usuarios WHERE id = ?");
+			preparedStatement = connection.prepareStatement("Delete from Usuario WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setInt(1, id);
 
@@ -297,7 +295,7 @@ public class UserMysqlDAO implements IDAOLogin {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection.prepareStatement("UPDATE usuarios SET name = ?,password= ? WHERE id = ?");
+			preparedStatement = connection.prepareStatement("UPDATE Usuario SET name = ?,password= ? WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, userNew.getName());
 			preparedStatement.setString(2, userNew.getPassword());
@@ -318,6 +316,13 @@ public class UserMysqlDAO implements IDAOLogin {
 		return result;
 	
 	}
+
+	@Override
+	public Usuario findUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findUserByEmail'");
+	}
+
 
 }
 
