@@ -28,23 +28,32 @@ public class CRUDFuncionalTest {
     public void setUp() throws Exception {
         WebDriverManager.chromedriver().setup(); 
         driver = new ChromeDriver();
-        baseUrl = "https://mern-crud-mpfr.onrender.com/";
+        baseUrl = "https://www.google.com/";
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
         js = (JavascriptExecutor) driver;
     }
 
     @Test
-    public void mern() throws Exception {
-driver.get(baseUrl);
-    driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/button")).clear();
-    driver.findElement(By.name("name")).sendKeys("Waldo444");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).clear();
-    driver.findElement(By.id("password")).sendKeys("Waldo44444");
-    driver.findElement(By.id("loginbtn")).click();
-    assertEquals("Ingresar al sitio | UADY Virtual - ES", driver.getTitle());
-     }
-    
+    public void testCRUD() throws Exception {
+    driver.get("https://mern-crud-mpfr.onrender.com/");
+    driver.findElement(By.xpath("//div[@id='root']/div/div[2]/button")).click();
+    driver.findElement(By.name("name")).click();
+    driver.findElement(By.name("name")).clear();
+    driver.findElement(By.name("name")).sendKeys("Jose Ac");
+    driver.findElement(By.name("name")).clear();
+    driver.findElement(By.name("name")).sendKeys("Jose Ac G");
+    driver.findElement(By.name("email")).click();
+    driver.findElement(By.name("email")).clear();
+    driver.findElement(By.name("email")).sendKeys("WaldoWick@gmail.com");
+    driver.findElement(By.name("age")).click();
+    driver.findElement(By.name("age")).clear();
+    driver.findElement(By.name("age")).sendKeys("22");
+    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Gender'])[2]/following::div[1]")).click();
+    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Male'])[1]/following::div[2]")).click();
+    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Woah!'])[1]/following::button[1]")).click();
+     assertEquals("MERN CRUD",driver.getTitle());
+}
+   
 
     @After
     public void tearDown() throws Exception {

@@ -5,18 +5,20 @@ private int id;
 private String name;
 private String email;
 private String password;
-private boolean IsLogged;
+private boolean isLogged;
 
-public Usuario(int id, String name, String email, String password, boolean isLogged) {
-    this.id = id;
+public Usuario(String name, String email, String password) {
     this.name = name;
     this.email = email;
     this.password = password;
-    IsLogged = isLogged;
+    this.isLogged = false;
 }
-public Usuario(String email2, boolean b, String nombre, String pass) {
-    //TODO Auto-generated constructor stub
-}
+ public Usuario(String name, boolean isLogged, String email, String password) {
+        this.name = name;
+        this.isLogged = isLogged;
+        this.email = email;
+        this.password = password;
+    }
 public int getId() {
     return id;
 }
@@ -42,9 +44,9 @@ public void setPassword(String password) {
     this.password = password;
 }
 public boolean isIsLogged() {
-    return IsLogged;
+    return isLogged;
 }
 public void setIsLogged(boolean isLogged) {
-    IsLogged = isLogged;
+    this.isLogged = isLogged;
 }
 }

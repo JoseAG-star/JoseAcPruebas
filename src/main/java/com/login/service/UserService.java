@@ -51,7 +51,7 @@ public Usuario findUserById(int id) {
     	return dao.updateUser(userOld);
     }
 
-    boolean deleteUser(int id) {
+    public boolean deleteUser(int id) {
     	return dao.deleteById(id);
     }
 }

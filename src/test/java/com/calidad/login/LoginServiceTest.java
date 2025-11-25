@@ -24,7 +24,7 @@ String email = "Correo@correo.com";
 String password = "contraseña123";
 //Crear Mock de la dependencia
 idaoLogin = mock(IDAOLogin.class);
-usuario = new Usuario(0, password, email, password, false);
+usuario = new Usuario(password, email, password);
 //Definir el mock del metodo FindUserByEmail
 when (idaoLogin.findUserByEmail(email)).thenReturn(usuario);
 //Instanciar la clase que probare
