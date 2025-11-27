@@ -27,7 +27,7 @@ jobs:
       # Then run your tests!
       - run:
           name:  Pruebas Calculadora
-          command: mvn test -Dtest=calculadora
+          command: mvn test -Dtest=CalculadoraTest
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
