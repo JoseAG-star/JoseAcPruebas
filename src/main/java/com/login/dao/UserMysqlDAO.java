@@ -50,7 +50,7 @@ public Connection getConnectionMySQL() {
 			String password = rs.getString(4);
 			boolean isLogged = rs.getBoolean(5);
 
-			result = new Usuario(username, isLogged, password, email);
+			result = new Usuario(username, password, email);
 			result.setId(id);
 			result.setIsLogged(isLogged);
 
@@ -81,7 +81,7 @@ public Connection getConnectionMySQL() {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection.prepareStatement("insert INTO Usuario(name,email,password,isLogged) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement("insert INTO usuarios(name,email,password,isLogged) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, user.getName());
 			preparedStatement.setString(2, user.getEmail());
@@ -111,7 +111,7 @@ public Connection getConnectionMySQL() {
 	}
 
 	
-	public Usuario findUsuarioByEmail(String email) {
+	public Usuario findUserByEmail(String email) {
 		Connection connection = getConnectionMySQL();
 		PreparedStatement preparedStatement;
 		ResultSet rs;
@@ -120,7 +120,7 @@ public Connection getConnectionMySQL() {
 
 		try {
 			// Declare statement query to run
-			preparedStatement = connection.prepareStatement("SELECT * from Usuario WHERE email = ?");
+			preparedStatement = connection.prepareStatement("SELECT * from usuarios WHERE email = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, email);
 			rs = preparedStatement.executeQuery();
@@ -135,7 +135,7 @@ public Connection getConnectionMySQL() {
 				String password = rs.getString(4);
 				boolean isLogged = rs.getBoolean(5);
 	
-				result = new Usuario(username, isLogged, emailUser, password);
+				result = new Usuario(username, emailUser, password);
 				result.setId(id);
 				result.setIsLogged(isLogged);
 	
@@ -169,15 +169,13 @@ public Connection getConnectionMySQL() {
 		Connection connection = getConnectionMySQL();
 		  PreparedStatement preparedStatement;
 		  ResultSet rs;
-		  boolean result = false;
-
 		  Usuario retrieved = null;
 
 		  List<Usuario> listaAlumnos = new ArrayList<Usuario>();
 		  
 		  try {
 		   // Declare statement query to run
-		   preparedStatement = connection.prepareStatement("SELECT * from Usuario");
+		   preparedStatement = connection.prepareStatement("SELECT * from usuarios");
 		   // Set the values to match in the ? on query
 		   rs = preparedStatement.executeQuery();
 
@@ -189,7 +187,7 @@ public Connection getConnectionMySQL() {
 			   String email = rs.getString(3);
 			   String password = rs.getString(4);
 			   boolean log = rs.getBoolean(5);		 
-			   retrieved = new Usuario(name, log, email,password);
+			   retrieved = new Usuario(name, email,password);
 			   retrieved.setId(id);
 			   retrieved.setIsLogged(log);
 			   listaAlumnos.add(retrieved);
@@ -218,21 +216,19 @@ public Connection getConnectionMySQL() {
 
 		try {
 			// Declare statement query to run
-			preparedStatement = connection.prepareStatement("SELECT * from Usuario WHERE id = ?");
+			preparedStatement = connection.prepareStatement("SELECT * from usuarios WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setInt(1, id);
 			rs = preparedStatement.executeQuery();
 
 			// Obtain the pointer to the data in generated table
 			rs.next();
-
-			int idUser = rs.getInt(1);
 			String username  = rs.getString(2);
 			String email = rs.getString(3);
 			String password = rs.getString(4);
 			boolean isLogged = rs.getBoolean(5);
 
-			result = new Usuario(username, isLogged, email, password);
+			result = new Usuario(username, email, password);
 			result.setId(id);
 			result.setIsLogged(isLogged);
 
@@ -264,7 +260,7 @@ public Connection getConnectionMySQL() {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection.prepareStatement("Delete from Usuario WHERE id = ?");
+			preparedStatement = connection.prepareStatement("Delete from usuarios WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setInt(1, id);
 
@@ -295,7 +291,7 @@ public Connection getConnectionMySQL() {
 		try {
 			// Declare statement query to run
 			PreparedStatement preparedStatement;
-			preparedStatement = connection.prepareStatement("UPDATE Usuario SET name = ?,password= ? WHERE id = ?");
+			preparedStatement = connection.prepareStatement("UPDATE usuarios SET name = ?,password= ? WHERE id = ?");
 			// Set the values to match in the ? on query
 			preparedStatement.setString(1, userNew.getName());
 			preparedStatement.setString(2, userNew.getPassword());
@@ -316,13 +312,5 @@ public Connection getConnectionMySQL() {
 		return result;
 	
 	}
-
-	@Override
-	public Usuario findUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'findUserByEmail'");
-	}
-
-
 }
 
