@@ -16,8 +16,8 @@ public class CalculadoraTest {
     public calculadora calc; 
 
     @BeforeEach
-      @SuppressWarnings("unused")
     void setup() { 
+        operador1= 10;
         operador2 = 5;
         calc = new calculadora(); 
         System.out.println("Inicializando...");
