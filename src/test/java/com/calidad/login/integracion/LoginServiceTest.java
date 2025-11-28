@@ -54,7 +54,9 @@ private final UserMysqlDAO dao;
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
-
+// Test: testCrearUsuario_ComparandoXML
+// Este test inserta un nuevo usuario mediante el servicio y compara el estado final de la tabla con un conteo esperado.
+// Se espera que la tabla usuarios contenga 4 registros (3 del dataset inicial + 1 creado).
     @Test
     public void testCrearUsuario_ComparandoXML() throws Exception {
         service.createUser("userNew", "nuevo@email.com", "Password123");
@@ -68,6 +70,9 @@ private final UserMysqlDAO dao;
         ITable actualTable = databaseDataSet.getTable("usuarios");
         assertEquals(4, actualTable.getRowCount());
     }
+// Test: testFindUserByEmail
+// Este test busca un usuario existente en el dataset cargado (initDB.xml) por su correo.
+// Se espera que el usuario no sea nulo y que su nombre sea "user1".
 
     @Test
     public void testFindUserByEmail() {
@@ -75,6 +80,9 @@ private final UserMysqlDAO dao;
         assertNotNull(u);
         assertEquals("user1", u.getName());
     }
+// Test: testDeleteUser
+// Este test elimina un usuario existente (ID 1) de la base de datos cargada.
+// Se espera que el conteo de filas en la tabla 'usuarios' baje a 2.
     
     @Test
     public void testDeleteUser() throws Exception {
@@ -87,6 +95,9 @@ private final UserMysqlDAO dao;
         
         assertEquals(2, actualTable.getRowCount());
     }
+    // Test: testUpdateUser
+// Este test actualiza el nombre y contraseña del usuario con ID 2.
+// Se espera que al consultar la base de datos, el nombre sea "NombreCambiado" y la contraseña "NuevaPass123".
     @Test
     public void testUpdateUser() throws Exception {
         Usuario usuario = service.findUserById(2);
@@ -106,7 +117,9 @@ private final UserMysqlDAO dao;
         assertEquals("NombreCambiado", nombreEnBD);
         assertEquals("NuevaPass123", passEnBD);
     }
-
+// Test: testFindAllUsers
+// Este test consulta todos los usuarios cargados inicialmente por DBUnit.
+// Se espera que el total de usuarios recuperados sea 3.
     @Test
     public void testFindAllUsers() throws Exception {
         int total = service.findAllUsers().size();

@@ -44,7 +44,9 @@ public class UadyVirtualTest {
         js = (JavascriptExecutor) driver;
         driver.manage().window().maximize(); 
     }
-
+// Test: testContrasenaIncorrecta
+// Este test intenta iniciar sesión en el portal con un correo y una contraseña falsa.
+// Se espera que aparezca un elemento con id 'passwordError' (assertTrue errorMsn.isDisplayed).
     @Test
     public void testContrasenaIncorrecta() throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30)); 

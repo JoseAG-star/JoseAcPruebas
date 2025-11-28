@@ -15,9 +15,9 @@ public class LoginServiceTest {
  private IDAOLogin idaoLogin;
     private Usuario usuario;
     private LoginService login;
-    //BeforeEache - Setup
-    //@Test - Prueba
-    //AfterEach - Clean Up
+   // Test: loginExitosoTest
+// Este test verifica que el método login retorne verdadero cuando el usuario existe y la contraseña coincide.
+// Se espera un resultado de true.
 @Test void loginExitosoTest(){
     //Setup
 String email = "Correo@correo.com";
@@ -37,5 +37,5 @@ boolean resultadoEsperado = true;
 assertThat(resultadoEsperado,is(resultadoEjecucion));
     
 }
-//AfterEach - Clean up
+
 }

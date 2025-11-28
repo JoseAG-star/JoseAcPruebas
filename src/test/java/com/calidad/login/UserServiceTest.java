@@ -26,12 +26,13 @@ public class UserServiceTest {
     private UserService service;
 
     @BeforeEach
-    @SuppressWarnings("unused")
     void setUp() {
         dao = mock(IDAOLogin.class);
         service = new UserService(dao);
     }
-
+// Test: testCreateUser_HappyPath
+// Este test verifica el flujo ideal de creación de usuario, donde el email no existe y la contraseña es válida.
+// Se espera que el resultado no sea nulo, el nombre sea "Jose" y el ID asignado sea 1
     @Test
     void testCreateUser_HappyPath() {
         String name = "Jose";
@@ -47,7 +48,9 @@ public class UserServiceTest {
         assertThat(resultado.getName(), is(name));
         assertThat(resultado.getId(), is(1));
     }
-
+// Test: testCreateUser_ShortPassword
+// Este test verifica la validación de seguridad cuando la contraseña es demasiado corta (menos de 8 caracteres).
+// Se espera un resultado nulo (el usuario no se crea) y que el método save() del DAO nunca se ejecute.
     @Test
     void testCreateUser_ShortPassword() {
         String name = "Jose";
@@ -59,7 +62,9 @@ public class UserServiceTest {
         assertThat(resultado, is(nullValue()));
         verify(dao, never()).save(any(Usuario.class));
     }
-
+// Test: testCreateUser_UserAlreadyExists
+// Este test verifica que no se cree un usuario si el email ya existe en el sistema.
+// Se espera que el método save() del DAO nunca sea llamado
     @Test
     void testCreateUser_UserAlreadyExists() {
         String name = "jose";
@@ -72,7 +77,9 @@ public class UserServiceTest {
         service.createUser(name, email, password);
         verify(dao, never()).save(any(Usuario.class));
     }
-
+// Test: testDeleteUser
+// Este test verifica que el servicio llame correctamente al DAO para eliminar un usuario por ID.
+// Se espera un resultado true indicando que la eliminación fue exitosa.
     @Test
     void testDeleteUser() {
         int userId = 1;
@@ -83,7 +90,9 @@ public class UserServiceTest {
         assertThat(resultado, is(true));
         verify(dao).deleteById(userId);
     }
-
+// Test: testUpdateUser
+// Este test verifica la lógica de actualización, recuperando un usuario viejo y guardando los nuevos datos.
+// Se espera que la contraseña del objeto retornado sea "NewPass123".
     @Test
     void testUpdateUser() {
         Usuario usuarioCambios = new Usuario("NewName", "email@email.com", "NewPass123");
@@ -98,7 +107,9 @@ public class UserServiceTest {
 
         assertThat(resultado.getPassword(), is("NewPass123"));
     }
-
+// Test: testFindAllUsers
+// Este test verifica que el servicio pueda recuperar una lista completa de usuarios.
+// Se espera que el tamaño de la lista retornada sea 2.
     @Test
     void testFindAllUsers() {
         List<Usuario> lista = Arrays.asList(
@@ -111,7 +122,9 @@ public class UserServiceTest {
 
         assertThat(resultado.size(), is(2));
     }
-    
+// Test: testFindUserByEmail
+// Este test verifica la búsqueda de un usuario específico por su correo electrónico.
+// Se espera que el objeto retornado sea igual al usuario simulado "usuarioEsperado".    
     @Test
     void testFindUserByEmail() {
         String email = "buscar@email.com";
