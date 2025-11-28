@@ -22,9 +22,8 @@ import org.openqa.selenium.WebElement;
 public class EdgeBusquedaTest { 
     private WebDriver driver;
     private boolean acceptNextAlert = true;
-    private StringBuffer verificationErrors = new StringBuffer();
-    JavascriptExecutor js; // Este objeto nos permite hacer el scroll
-
+    private final StringBuffer verificationErrors = new StringBuffer();
+    JavascriptExecutor js; 
     @BeforeEach
     public void setUp() throws Exception {
         WebDriverManager.edgedriver().setup();
@@ -32,8 +31,6 @@ public class EdgeBusquedaTest {
         
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
         driver.manage().window().maximize();
-        
-        // Aquí inicializamos el ejecutor de JavaScript
         js = (JavascriptExecutor) driver;
     }
 
@@ -65,7 +62,7 @@ public class EdgeBusquedaTest {
             fail(verificationErrorString);
         }
     }
-
+     @SuppressWarnings("unused")
     private boolean isElementPresent(By by) {
         try {
             driver.findElement(by);
@@ -74,7 +71,7 @@ public class EdgeBusquedaTest {
             return false;
         }
     }
-
+     @SuppressWarnings("unused")
     private boolean isAlertPresent() {
         try {
             driver.switchTo().alert();
@@ -83,7 +80,8 @@ public class EdgeBusquedaTest {
             return false;
         }
     }
-
+    
+    @SuppressWarnings("unused")
     private String closeAlertAndGetItsText() {
         try {
             Alert alert = driver.switchTo().alert();

@@ -16,12 +16,12 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import com.login.dao.UserMysqlDAO;
 import com.login.modelo.Usuario;
 import com.login.service.UserService;
-import org.junit.Before; // <--- IMPORTANTE
-import org.junit.After;  // <--- IMPORTANTE
+import org.junit.Before; 
+
 
 public class LoginServiceTest extends DBTestCase {
-private UserMysqlDAO dao;
-    private UserService service;
+private final UserMysqlDAO dao;
+    private final UserService service;
 
     public LoginServiceTest() {
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.mysql.cj.jdbc.Driver");
@@ -62,13 +62,10 @@ private UserMysqlDAO dao;
         IDatabaseConnection conn = getConnection();
         int iniciales = conn.createDataSet().getTable("usuarios").getRowCount();
     System.out.println(">>> USUARIOS INICIALES CARGADOS POR DBUNIT: " + iniciales);
-        // Necesario desactivar aqui también si DBUnit se pone estricto
         conn.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         
         IDataSet databaseDataSet = conn.createDataSet();
-        ITable actualTable = databaseDataSet.getTable("usuarios"); // Asegurate que coincida con tu tabla SQL
-        
-        // Debería haber 4 usuarios (3 del xml + 1 nuevo)
+        ITable actualTable = databaseDataSet.getTable("usuarios");
         assertEquals(4, actualTable.getRowCount());
     }
 
@@ -92,21 +89,17 @@ private UserMysqlDAO dao;
     }
     @Test
     public void testUpdateUser() throws Exception {
-        // 1. Obtener usuario existente (ID 2 según tu initDB.xml es user2)
         Usuario usuario = service.findUserById(2);
         usuario.setName("NombreCambiado");
         usuario.setPassword("NuevaPass123");
         
-        // 2. Ejecutar actualización
         service.updateUser(usuario);
-        
-        // 3. Verificar en base de datos
+
         IDatabaseConnection conn = getConnection();
         conn.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         IDataSet databaseDataSet = conn.createDataSet();
         ITable actualTable = databaseDataSet.getTable("usuarios");
-        
-        // Verificar que el nombre cambió en la fila correspondiente (fila 1 es el ID 2 porque empieza en 0)
+     
         String nombreEnBD = (String) actualTable.getValue(1, "name");
         String passEnBD = (String) actualTable.getValue(1, "password");
         
@@ -116,7 +109,6 @@ private UserMysqlDAO dao;
 
     @Test
     public void testFindAllUsers() throws Exception {
-        // initDB.xml tiene 3 usuarios
         int total = service.findAllUsers().size();
         assertEquals(3, total);
     }
