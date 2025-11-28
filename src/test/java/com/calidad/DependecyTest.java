@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.unittest.dependencia.Dependency;
 import com.unittest.dependencia.SubDependency;
@@ -19,6 +18,7 @@ public class DependecyTest {
     private SubDependency subDependency;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() throws Exception {
 subDependency = mock(SubDependency.class);
 dependency = new Dependency(subDependency);
@@ -26,9 +26,7 @@ dependency = new Dependency(subDependency);
 @Test
 void testSubDependencyClassName(){
     String esperado = "SubDependency.class";
-
     String resultadoEjecucion = dependency.getSubdependencyClassName();
-
     assertThat(resultadoEjecucion,is(esperado));
 }
 @Test
@@ -50,11 +48,9 @@ void testSumaDos(){
 }
 @Test
     void testAddTwo(){
-        when(subDependency.addTwo(anyInt())).thenAnswer(new Answer<Integer>(){
-            public Integer answer(InvocationOnMock invoction) throws Throwable{
-                int arg = (Integer) invoction.getArguments()[0];
-                return arg +20;
-            }
+        when(subDependency.addTwo(anyInt())).thenAnswer((InvocationOnMock invoction) -> {
+            int arg = (Integer) invoction.getArguments()[0];
+            return arg +20;
         });
         Integer resultadoEjecucion = subDependency.addTwo(100);
         assertThat(120, is(resultadoEjecucion));
