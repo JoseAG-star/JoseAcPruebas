@@ -29,12 +29,13 @@ dependency = new Dependency(subDependency);
 @Test
 void testSubDependencyClassName(){
     String esperado = "SubDependency.class";
+    when(subDependency.getClassName()).thenReturn(esperado);
     String resultadoEjecucion = dependency.getSubdependencyClassName();
     assertThat(resultadoEjecucion,is(esperado));
 }
 // Test: testSubDependencyClassNameMock
 // Este test simula (mock) la respuesta del método getClassName de la subdependencia.
-// Se espera que el mock retorne "SubDependency.class" forzadament
+// Se espera que el mock retorne "SubDependency.class" forzadamentx 
 @Test
 void testSubDependencyClassNameMock(){
     String esperado = "SubDependency.class";
