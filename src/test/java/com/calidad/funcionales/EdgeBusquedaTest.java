@@ -33,7 +33,9 @@ public class EdgeBusquedaTest {
         driver.manage().window().maximize();
         js = (JavascriptExecutor) driver;
     }
-
+// Test: testBusqueda
+// Este test realiza una búsqueda en Bing ("wolverine"), hace scroll y navega a Wikipedia.
+// Se espera que el título de la página final sea "Wolverine - Wikipedia, la enciclopedia libre".
     @Test
     public void testBusqueda() throws Exception {
         driver.get("https://www.bing.com/");

@@ -41,7 +41,9 @@ public class CRUDFuncionalTest {
         js = (JavascriptExecutor) driver;
     }
 
-    // --- MÉTODOS CREATE Y CAMINO MALO 
+    // Test: testCreate
+// Este test automatiza el llenado de un formulario para crear un usuario (Jose Ac G) en la web.
+// Se espera que el título de la página se mantenga como "MERN CRUD" tras la operación.
     @Test
     @org.junit.jupiter.api.Order(1)
     public void testCreate() throws Exception {
@@ -58,7 +60,9 @@ public class CRUDFuncionalTest {
         driver.findElement(By.xpath("//button[text()='Add']")).click();
         assertEquals("MERN CRUD", driver.getTitle());
     }
-
+// Test: testCaminoMalo
+// Este test intenta crear un usuario con datos inválidos (email sin arroba) para verificar estabilidad.
+// Se espera que el título de la página siga siendo "MERN CRUD" (el test verifica que no crashee, aunque no valida el error explícitamente en el código).
     @Test
     @org.junit.jupiter.api.Order(2)
     public void testCaminoMalo() throws Exception {
@@ -75,9 +79,9 @@ public class CRUDFuncionalTest {
         driver.findElement(By.xpath("//button[text()='Add']")).click();
         assertEquals("MERN CRUD", driver.getTitle());
     }
-
-   
-
+// Test: testUpdateUser
+// Este test localiza un botón de editar, borra el nombre existente y escribe uno nuevo.
+// Se espera que el botón "Save" sea clickeable y se ejecute la acción.
 @Test
     @org.junit.jupiter.api.Order(3)
     public void testUpdateUser() throws Exception {
@@ -102,7 +106,9 @@ public class CRUDFuncionalTest {
         clickJS(saveBtn);
         
     }
-
+// Test: testDeleteUser
+// Este test hace clic en eliminar un usuario y confirma la acción en el modal emergente.
+// Se espera que el botón de confirmación desaparezca (invisibilityOf) indicando que el modal se cerró.
     @Test
     @org.junit.jupiter.api.Order(4)
     public void testDeleteUser() throws Exception {
