@@ -46,7 +46,7 @@ public class EdgeBusquedaTest {
         searchBox.sendKeys("wolverine");
         searchBox.submit();
         driver.findElement(By.id("b_results"));
-        js.executeScript("window.scrollBy(0, 400)");
+        js.executeScript("window.scrollBy(0, 800)");
         Thread.sleep(2000); 
 
         driver.get("https://es.wikipedia.org/wiki/Wolverine");

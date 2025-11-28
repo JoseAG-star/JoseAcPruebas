@@ -1,6 +1,6 @@
 package com.unittest.calculadora;
 
-public class calculadora{
+public class Calculadora{
 
 double resultado;
     

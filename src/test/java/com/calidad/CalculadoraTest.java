@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import com.unittest.calculadora.calculadora; 
+import com.unittest.calculadora.Calculadora; 
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -13,13 +13,14 @@ public class CalculadoraTest {
     
     public double operador1;
     public double operador2;
-    public calculadora calc; 
+    public Calculadora calc; 
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setup() { 
         operador1= 10;
         operador2 = 5;
-        calc = new calculadora(); 
+        calc = new Calculadora(); 
         System.out.println("Inicializando...");
     }
 
@@ -55,7 +56,7 @@ public class CalculadoraTest {
             //Verificar
             assertThat(resultadoEsperado, is(resultado));
         }
-       // Test: testMultiplicarNumerosPositivos
+// Test: testMultiplicarNumerosPositivos
 // Este test verifica que el método de multiplicación calcule el producto de dos números.
 // Se espera un resultado de 50.0. 
     @Test
