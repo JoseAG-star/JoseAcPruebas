@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import com.unittest.calculadora.Calculadora; 
+import com.unittest.calculadora.calculadora; 
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -13,14 +13,14 @@ public class CalculadoraTest {
     
     public double operador1;
     public double operador2;
-    public Calculadora calc; 
+    public calculadora calc; 
 
     @BeforeEach
     @SuppressWarnings("unused")
     void setup() { 
         operador1= 10;
         operador2 = 5;
-        calc = new Calculadora(); 
+        calc = new calculadora(); 
         System.out.println("Inicializando...");
     }
 
