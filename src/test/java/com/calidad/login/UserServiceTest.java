@@ -26,6 +26,7 @@ public class UserServiceTest {
     private UserService service;
 
     @BeforeEach
+      @SuppressWarnings("unused")
     void setUp() {
         dao = mock(IDAOLogin.class);
         service = new UserService(dao);
