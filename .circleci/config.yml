@@ -28,6 +28,24 @@ jobs:
       - run:
           name:  Pruebas Calculadora
           command: mvn test -Dtest=CalculadoraTest
+          # Paso 3: Pruebas con Mockito
+      - run:
+          name: Test Mockito
+          # Ejecuta cualquier test que contenga "Mockito" en el nombre o una clase específica
+          command: mvn test -Dtest=*Mockito* # Paso 4: Pruebas con DbUnit
+      - run:
+          name: Test DbUnit
+          command: mvn test -Dtest=*DbUnit*
+
+      # Paso 5: Selenium CRUD
+      - run:
+          name: Test Selenium CRUD
+          command: mvn test -Dtest=CRUDFuncionalTest
+
+      # Paso 6: UADY Virtual (Selenium)
+      - run:
+          name: Test UADY Virtual
+          command: mvn test -Dtest=UadyVirtualTest
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
