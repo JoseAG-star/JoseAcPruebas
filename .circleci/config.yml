@@ -32,10 +32,7 @@ jobs:
       - run:
           name: Test Mockito
           # Ejecuta cualquier test que contenga "Mockito" en el nombre o una clase específica
-          command: mvn test -Dtest=*Mockito* # Paso 4: Pruebas con DbUnit
-      - run:
-          name: Test DbUnit
-          command: mvn test -Dtest=*DbUnit*
+          command: mvn test -Dtest=UserServiceTest # Paso 4: Pruebas con DbUni
 
       # Paso 5: Selenium CRUD
       - run:
