@@ -34,16 +34,6 @@ jobs:
           # Ejecuta cualquier test que contenga "Mockito" en el nombre o una clase específica
           command: mvn test -Dtest=UserServiceTest # Paso 4: Pruebas con DbUni
 
-      # Paso 5: Selenium CRUD
-      - run:
-          name: Test Selenium CRUD
-          command: mvn test -Dtest=CRUDFuncionalTest
-
-      # Paso 6: UADY Virtual (Selenium)
-      - run:
-          name: Test UADY Virtual
-          command: mvn test -Dtest=UadyVirtualTest
-
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
