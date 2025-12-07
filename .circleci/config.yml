@@ -28,6 +28,11 @@ jobs:
       - run:
           name:  Pruebas Calculadora
           command: mvn test -Dtest=CalculadoraTest
+          # Paso 3: Pruebas con Mockito
+      - run:
+          name: Test Mockito
+          # Ejecuta cualquier test que contenga "Mockito" en el nombre o una clase específica
+          command: mvn test -Dtest=UserServiceTest # Paso 4: Pruebas con DbUni
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows

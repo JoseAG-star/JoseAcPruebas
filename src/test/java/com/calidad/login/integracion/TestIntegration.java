@@ -1,5 +1,5 @@
 package com.calidad.login.integracion;
 
-public @interface Test{
+public @interface TestIntegration{
 
 }
