@@ -83,12 +83,6 @@
   
   <build>
     <plugins>
-<<<<<<< HEAD
-      
-=======
-     
->>>>>>> 229bc5f83edcbd7bfe6fc3c9961d7552b5fc08b5
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
