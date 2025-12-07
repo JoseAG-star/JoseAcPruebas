@@ -1,6 +1,8 @@
 package com.calidad.funcionales;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Duration;
@@ -8,6 +10,7 @@ import java.time.Duration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
@@ -28,6 +31,9 @@ public class CRUDFuncionalTest {
     private JavascriptExecutor js; 
     private final StringBuffer verificationErrors = new StringBuffer();
 
+    // Variable para usar el mismo nombre
+    private String nombreOriginal = "Jose Ac G"; 
+
     @BeforeEach
     public void setUp() throws Exception {
         ChromeOptions options = new ChromeOptions();
@@ -41,16 +47,17 @@ public class CRUDFuncionalTest {
         js = (JavascriptExecutor) driver;
     }
 
-    // Test: testCreate
-// Este test automatiza el llenado de un formulario para crear un usuario (Jose Ac G) en la web.
-// Se espera que el título de la página se mantenga como "MERN CRUD" tras la operación.
+    // TEST 1: CREATE
     @Test
-    @org.junit.jupiter.api.Order(1)
+    @Order(1)
     public void testCreate() throws Exception {
         driver.get("https://mern-crud-mpfr.onrender.com/");
-        driver.findElement(By.xpath("//div[@id='root']/div/div[2]/button")).click();
         
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("name"))).sendKeys("Jose Ac G");
+        // Esperamos a que el botón de agregar sea clickeable
+        WebElement addBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='root']/div/div[2]/button")));
+        addBtn.click();
+        
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("name"))).sendKeys(nombreOriginal);
         driver.findElement(By.name("email")).sendKeys("WaldoWick@gmail.com");
         driver.findElement(By.name("age")).sendKeys("22");
         
@@ -58,72 +65,100 @@ public class CRUDFuncionalTest {
         driver.findElement(By.xpath("//div[@role='option']//span[text()='Male']")).click();
         
         driver.findElement(By.xpath("//button[text()='Add']")).click();
-        assertEquals("MERN CRUD", driver.getTitle());
+        
+        Thread.sleep(1500); // Espera para asegurar que se guardó en la tabla
+        
+        // Assert: Validamos que el nombre aparezca en el código de la página
+        boolean usuarioExiste = driver.getPageSource().contains(nombreOriginal);
+        assertTrue(usuarioExiste, "El usuario creado debería aparecer en la tabla.");
     }
-// Test: testCaminoMalo
-// Este test intenta crear un usuario con datos inválidos (email sin arroba) para verificar estabilidad.
-// Se espera que el título de la página siga siendo "MERN CRUD" (el test verifica que no crashee, aunque no valida el error explícitamente en el código).
+
+    // TEST 2: CAMINO MALO
     @Test
-    @org.junit.jupiter.api.Order(2)
+    @Order(2)
     public void testCaminoMalo() throws Exception {
         driver.get("https://mern-crud-mpfr.onrender.com/");
-        driver.findElement(By.xpath("//div[@id='root']/div/div[2]/button")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='root']/div/div[2]/button"))).click();
         
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("name"))).sendKeys("Usuario Error");
-        driver.findElement(By.name("email")).sendKeys("email-sin-arroba.com");
+        driver.findElement(By.name("email")).sendKeys("email-sin-arroba.com"); 
         driver.findElement(By.name("age")).sendKeys("25");
         
         driver.findElement(By.xpath("//div[text()='Gender']")).click();
         driver.findElement(By.xpath("//div[@role='option']//span[text()='Male']")).click();
         
-        driver.findElement(By.xpath("//button[text()='Add']")).click();
-        assertEquals("MERN CRUD", driver.getTitle());
+        WebElement addBtnModal = driver.findElement(By.xpath("//button[text()='Add']"));
+        addBtnModal.click();
+
+        // Assert: El botón debe seguir visible porque NO se debió cerrar el modal por el error
+        assertTrue(addBtnModal.isDisplayed(), "El modal no debería cerrarse con datos inválidos.");
     }
-// Test: testUpdateUser
-// Este test localiza un botón de editar, borra el nombre existente y escribe uno nuevo.
-// Se espera que el botón "Save" sea clickeable y se ejecute la acción.
-@Test
-    @org.junit.jupiter.api.Order(3)
+
+    // TEST 3: UPDATE
+    @Test
+    @Order(3)
     public void testUpdateUser() throws Exception {
         driver.get("https://mern-crud-mpfr.onrender.com/");
-        WebElement editBtn = driver.findElement(By.xpath("//div[@id='root']/div/div[2]/table/tbody/tr[1]/td[5]/button[contains(text(),'Edit')]"));
+        
+        // ESTRATEGIA: Vamos a la primera fila (tr[1]) que suele ser el último agregado
+        // Usamos espera explícita para asegurarnos que la tabla cargó
+        WebElement editBtn = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//tbody/tr[1]//button[contains(text(),'Edit')]")
+        ));
         clickJS(editBtn);
+        
         WebElement nameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("name")));
         
-        nameField.click();  
-        String valorActual = nameField.getAttribute("value");
+        // LIMPIEZA ROBUSTA PARA REACT:
+        // A veces clear() falla, así que seleccionamos todo (Ctrl+A) y borramos
+        nameField.click();
+        nameField.sendKeys(Keys.CONTROL + "a");
+        nameField.sendKeys(Keys.DELETE);
         
-        for (int i = 0; i < valorActual.length() + 3; i++) {
-            nameField.sendKeys(Keys.BACK_SPACE);
-        }
+        Thread.sleep(500); // Pequeña pausa visual
+        String nuevoNombre = "Jose Editado";
+        nameField.sendKeys(nuevoNombre);
         
-        Thread.sleep(500); 
-
-        nameField.sendKeys("Jose Ac G");
         WebElement saveBtn = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("//div[contains(@class, 'modal')]//button[text()='Save']")
         ));
         clickJS(saveBtn);
         
+        Thread.sleep(1500); // Espera para que la tabla se actualice
+        
+        // Assert: Buscamos el nuevo nombre en la página
+        boolean nombreActualizado = driver.getPageSource().contains(nuevoNombre);
+        assertTrue(nombreActualizado, "El nombre en la tabla debería decir 'Jose Editado'.");
     }
-// Test: testDeleteUser
-// Este test hace clic en eliminar un usuario y confirma la acción en el modal emergente.
-// Se espera que el botón de confirmación desaparezca (invisibilityOf) indicando que el modal se cerró.
+
+    // TEST 4: DELETE
     @Test
-    @org.junit.jupiter.api.Order(4)
+    @Order(4)
     public void testDeleteUser() throws Exception {
         driver.get("https://mern-crud-mpfr.onrender.com/");
 
-        WebElement deleteBtn = driver.findElement(By.xpath("//tbody/tr[1]//button[text()='Delete']"));
+        // Borramos el de la primera fila (que debería ser "Jose Editado")
+        WebElement deleteBtn = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//tbody/tr[1]//button[contains(text(),'Delete')]")
+        ));
         clickJS(deleteBtn);
 
-        WebElement confirmBtn = wait.until(ExpectedConditions.presenceOfElementLocated(
+        WebElement confirmBtn = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("//div[contains(@class, 'modal')]//button[text()='Yes' or text()='Delete']")
         ));
         
         Thread.sleep(500); 
         clickJS(confirmBtn);
+        
+        // Esperamos a que el botón de confirmación desaparezca (el modal se cierra)
         wait.until(ExpectedConditions.invisibilityOf(confirmBtn));
+        
+        Thread.sleep(1000); // Esperamos refresco de tabla
+
+        // Assert: Verificamos que "Jose Editado" YA NO esté en la primera fila
+        // Ojo: Si la tabla tiene muchos datos, mejor verificar que no esté en toda la pagina
+        boolean usuarioSigueAhi = driver.getPageSource().contains("Jose Editado");
+        assertFalse(usuarioSigueAhi, "El usuario 'Jose Editado' no debería aparecer tras borrarlo.");
     }
 
     @AfterEach
