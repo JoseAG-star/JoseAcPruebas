@@ -22,8 +22,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CRUDFuncionalTest {
 
@@ -33,28 +31,27 @@ public class CRUDFuncionalTest {
     private final StringBuffer verificationErrors = new StringBuffer();
 
     // Variable para usar el mismo nombre
+    @SuppressWarnings("FieldMayBeFinal")
     private String nombreOriginal = "Jose Ac G"; 
 
-    @BeforeEach
-    public void setUp() throws Exception {
-          WebDriverManager.chromedriver().setup();
+   @BeforeEach
+public void setUp() throws Exception {
     ChromeOptions options = new ChromeOptions();
-    options.addArguments("--no-sandbox");
-    options.addArguments("--disable-dev-shm-usage");
     options.addArguments("--remote-allow-origins=*");
-    
-    // Configuración vital para CircleCI
+    options.addArguments("--start-maximized");
+    // Agrega estas opciones para que sea más estable en CircleCI (headless mode)
     options.addArguments("--headless=new"); 
-    options.addArguments("--window-size=1920,1080");
-    // User-Agent para evitar bloqueo de Microsoft
-    options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"); 
-    options.addArguments("--ignore-certificate-errors");
-    
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--no-sandbox");
+
     driver = new ChromeDriver(options);
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60)); // Espera de 60s
+    
+    // CAMBIO IMPORTANTE: Aumentar de 10 a 60 segundos
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+    wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+    
     js = (JavascriptExecutor) driver;
-    driver.manage().window().maximize(); 
-    }
+}
 
     // TEST 1: CREATE
     @Test
