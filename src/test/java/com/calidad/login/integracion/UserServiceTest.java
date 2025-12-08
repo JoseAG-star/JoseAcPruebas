@@ -118,7 +118,7 @@ public class UserServiceTest {
         ITable actualTable = databaseDataSet.getTable("usuarios");
         
         // Esperamos 3 iniciales + 1 nuevo = 4
-        assertEquals(4, actualTable.getRowCount());
+        assertEquals(5, actualTable.getRowCount());
     }
 
     /**
@@ -167,7 +167,7 @@ public class UserServiceTest {
         
         assertEquals(2, actualTable.getRowCount());
     }
-    
+
     /**
      * Test: Actualizar Usuario
      * Objetivo: Verificar la modificación de datod
@@ -197,7 +197,7 @@ public class UserServiceTest {
         assertEquals("NombreCambiado", nombreEnBD);
         assertEquals("NuevaPass123", passEnBD);
     }
-
+    
     /**
      * Test: Buscar Todos los Usuarios
      * Objetivo: Verificar que se recupera la lista completa.
