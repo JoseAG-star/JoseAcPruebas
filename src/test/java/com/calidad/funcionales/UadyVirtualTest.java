@@ -32,17 +32,23 @@ public class UadyVirtualTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        WebDriverManager.chromedriver().setup();
-        
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
-        
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-        js = (JavascriptExecutor) driver;
-        driver.manage().window().maximize(); 
+           WebDriverManager.chromedriver().setup();
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--remote-allow-origins=*");
+    
+    // Configuración vital para CircleCI
+    options.addArguments("--headless=new"); 
+    options.addArguments("--window-size=1920,1080");
+    // User-Agent para evitar bloqueo de Microsoft
+    options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"); 
+    options.addArguments("--ignore-certificate-errors");
+    
+    driver = new ChromeDriver(options);
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60)); // Espera de 60s
+    js = (JavascriptExecutor) driver;
+    driver.manage().window().maximize(); 
     }
 // Test: testContrasenaIncorrecta
 // Este test intenta iniciar sesión en el portal con un correo y una contraseña falsa.

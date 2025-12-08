@@ -22,6 +22,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CRUDFuncionalTest {
 
@@ -35,15 +37,23 @@ public class CRUDFuncionalTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--start-maximized");
-
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        js = (JavascriptExecutor) driver;
+          WebDriverManager.chromedriver().setup();
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--remote-allow-origins=*");
+    
+    // Configuración vital para CircleCI
+    options.addArguments("--headless=new"); 
+    options.addArguments("--window-size=1920,1080");
+    // User-Agent para evitar bloqueo de Microsoft
+    options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"); 
+    options.addArguments("--ignore-certificate-errors");
+    
+    driver = new ChromeDriver(options);
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60)); // Espera de 60s
+    js = (JavascriptExecutor) driver;
+    driver.manage().window().maximize(); 
     }
 
     // TEST 1: CREATE
