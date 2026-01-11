@@ -1,31 +1,36 @@
 package com.calidad;
-import org.junit.jupiter.api.Test;
-import com.unittest.calculadora.calculadora;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
+import com.unittest.calculadora.Calculadora; 
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-
 public class CalculadoraTest {
- public double operador1;
+    
+    public double operador1;
     public double operador2;
-    public calculadora calc;
+    public Calculadora calc; 
 
     @BeforeEach
-        void setip(){
-            operador1 = 10;
-            operador2 = 5;
-            calc = new calculadora();
-            System.out.println("Inicializando...");
-        }
+    @SuppressWarnings("unused")
+    void setup() { 
+        operador1= 10;
+        operador2 = 5;
+        calc = new Calculadora(); 
+        System.out.println("Inicializando...");
+    }
+
     @AfterEach
     public void cleanUp(){
         System.out.println("Prueba finalizada!");
     }
-    
+// Test: testSumaNumerosPositivos
+// Este test verifica que el método de suma adicione correctamente dos números positivos (operador1 y operador2).
+// Se espera un resultado de 15.0 
     @Test
         void testSumaNumerosPositivos(){
             //Inicializar datos
@@ -37,6 +42,9 @@ public class CalculadoraTest {
             //Verificar
             assertThat(resultadoEsperado, is(resultado));
         }
+       // Test: testRestaNumerosPositivos
+// Este test verifica que el método de resta sustraiga correctamente el operador2 del operador1.
+// Se espera un resultado de 5.0 
     @Test
         void testRestaNumerosPositivos(){
             //Inicializar datos
@@ -48,6 +56,9 @@ public class CalculadoraTest {
             //Verificar
             assertThat(resultadoEsperado, is(resultado));
         }
+// Test: testMultiplicarNumerosPositivos
+// Este test verifica que el método de multiplicación calcule el producto de dos números.
+// Se espera un resultado de 50.0. 
     @Test
         void testMultiplicarNumerosPositivos(){
             //Inicializar datos
@@ -59,23 +70,13 @@ public class CalculadoraTest {
             //Verificar
             assertThat(resultadoEsperado, is(resultado));
         }
-
+// Test: testDivideNumerosPositivos
+// Este test verifica que el método de división realice el cociente correctamente.
+// Se espera un resultado de 2.0.
     @Test
-        void testDivideNumerosPositivos(){
-            //Inicializar datos
-            double resultadoEsperado = 2;
-
-            //Ejercitar el código
-            double resultado = calc.divide(operador1, operador2);
-
-            //Verificar
-            assertThat(resultadoEsperado, is(resultado));
-        }
-    /*@Test(expected = NullPointerException.class)    
-    public void whenExceptionThrown_thenExpectationSatisfied(){
-        String test = null;
-        test.length();
-    }*/
-
+    void testDivideNumerosPositivos(){
+        double resultadoEsperado = 2;
+        double resultado = calc.divide(operador1, operador2);
+        assertThat(resultadoEsperado, is(resultado));
+    }
 }
-

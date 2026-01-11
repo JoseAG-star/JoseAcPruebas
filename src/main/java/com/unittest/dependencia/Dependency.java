@@ -2,6 +2,7 @@ package com.unittest.dependencia;
 
 public class Dependency {
 private final SubDependency subDependency;
+@SuppressWarnings("unused") //Se uso para pasar por alto el hecho de que no se usa la variable
 	private double ultimoResultado;
 	public double suma(double operando1, double operando2) {
 		return ultimoResultado = operando1 + operando2;
